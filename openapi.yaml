@@ -1,0 +1,304 @@
+openapi: 3.0.0
+info:
+  title: 'USERS REST API'
+  description: 'Endpoints of users API'
+  license:
+    name: 'Apache 2.0'
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      tags:
+        - Users
+      summary: 'Get a list of users with pagination'
+      description: 'Retrieve a list of users with pagination. Use the `page` parameter to specify the page number.'
+      operationId: 382e1610e5f3b0621f6eaff0d6b53cf1
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'The page number to retrieve'
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '404':
+          description: 'No more records'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: 'There are no more records to load' }
+                type: object
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: 'Server error occurred' }
+                type: object
+  '/user/show/{id}':
+    get:
+      tags:
+        - Users
+      summary: 'Get a single user'
+      description: 'Get a single user by id'
+      operationId: 1e7db87850c82779a58d0ec0e908cf7f
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The id of user to receive'
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: 'There is no user with id {id}' }
+                type: object
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: 'Server error occurred' }
+                type: object
+  /users/create:
+    post:
+      tags:
+        - Users
+      summary: 'Create a new user'
+      description: 'Create a new user with a specified name, email, gender and status'
+      operationId: 049790b8c55aa74486fab71645398d70
+      requestBody:
+        description: 'User object that needs to be created'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: 'User created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: 'Invalid input'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: 'Please select a correct status (active or inactive)' }
+                type: object
+        '422':
+          description: 'Unprocessable Entity'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: 'Client error: `POST resulted in a `422 Unprocessable Entity`' }
+                type: object
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: "SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'usher@example.com' for key 'users.email'" }
+                type: object
+  '/users/update/{id}':
+    patch:
+      tags:
+        - Users
+      summary: 'Update user'
+      description: 'Update user fields (name, email, gender, status)'
+      operationId: b5f87202629fd52f174c0a4ba229941d
+      parameters:
+        -
+          name: id
+          in: path
+          description: "User's id for update"
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 1
+      requestBody:
+        description: 'Updated user'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: 'Bad request'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: 'Please enter a the name' }
+                type: object
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: 'The user with such id not found' }
+                type: object
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: "SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'user@example.com' for key 'users.email'" }
+                type: object
+  '/users/{id}':
+    delete:
+      tags:
+        - Users
+      summary: 'Delete user'
+      description: 'Deletes user by id'
+      operationId: a8c9e2df05712a856317dc990b16f471
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The id of the user to delete'
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 1
+      responses:
+        '204':
+          description: 'User deleted succefully'
+        '404':
+          description: 'User not found'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: 'There is no user with id 2' }
+                type: object
+        '500':
+          description: 'Internal server error'
+  /users/delete:
+    post:
+      tags:
+        - Users
+      summary: 'Delete multiple users'
+      description: 'Delete multiple users by providing their ids'
+      operationId: 8424c1869719f4d73bd5b75e75786925
+      requestBody:
+        description: 'IDs of the users to delete, separated by commas'
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - ids
+              properties:
+                ids:
+                  type: array
+                  items: { type: integer, example: '1' }
+              type: object
+      responses:
+        '204':
+          description: 'Success, no content returned'
+        '400':
+          description: 'Invalid input'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: 'Invalid input, IDs must be integers' }
+                type: object
+        '404':
+          description: 'User(s) not found'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: 'User(s) not found' }
+                type: object
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: 'Failed to delete records' }
+                type: object
+components:
+  schemas:
+    User:
+      title: User
+      description: 'User object'
+      required:
+        - id
+        - name
+        - email
+        - status
+        - gender
+      properties:
+        id:
+          description: 'User ID'
+          type: integer
+          readOnly: true
+        name:
+          description: 'User name'
+          type: string
+        email:
+          description: 'User email'
+          type: string
+          format: email
+        status:
+          description: 'User status'
+          type: string
+          enum:
+            - active
+            - inactive
+        gender:
+          description: 'User gender'
+          type: string
+          enum:
+            - male
+            - female
+      type: object

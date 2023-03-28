@@ -1,0 +1,39 @@
+{
+  "name": "training/template",
+  "scripts": {
+    "phpstan": "./vendor/bin/phpstan analyse",
+    "phpcs": "./vendor/bin/phpcs -n --standard=ruleset.xml --extensions=php --encoding=utf8 --report=full",
+    "tests": "./vendor/phpunit/phpunit/phpunit",
+    "tests-coverage": "./vendor/phpunit/phpunit/phpunit --coverage-html coverage",
+    "migration" : "php ./database/migrations/Migration.php",
+    "seed": "php ./database/seeds/UserFactory.php",
+    "tests-pipe": "./vendor/bin/phpunit --printer=Sempro\\\\PHPUnitPrettyPrinter\\\\PrettyPrinterForPhpUnit9 --colors=always --no-logging tests"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "./",
+      "Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": "^8.0",
+    "ext-pdo": "*",
+    "vlucas/phpdotenv": "^5.5",
+    "twig/twig": "^3.0",
+    "guzzlehttp/guzzle": "^7.0",
+    "zircote/swagger-php": "^4.7"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^1.8",
+    "squizlabs/php_codesniffer": "3.*",
+    "escapestudios/symfony2-coding-standard": "3.x-dev",
+    "slevomat/coding-standard": "~8.0",
+    "phpunit/phpunit": "^9.5",
+    "sempro/phpunit-pretty-print": "^1.4"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}

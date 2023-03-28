@@ -1,0 +1,19 @@
+{
+  "name": "traineeInno",
+  "version": "1.0.0",
+  "description": "My traineeship",
+  "scripts": {
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "css-loader": "^6.7.3",
+    "mini-css-extract-plugin": "^2.7.3",
+    "webpack": "^5.76.1",
+    "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.0-alpha1",
+    "bootstrap-icons": "^1.10.3",
+    "jquery": "^3.6.4"
+  }
+}

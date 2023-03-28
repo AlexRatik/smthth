@@ -1,0 +1,27 @@
+{% extends "layout/main.twig" %}
+
+{% block content %}
+    <section class="container mt-5">
+        <div class="shadow card">
+            <div class="shadow card-header text-center" style="background-color: #ffb900">
+                <h3>User Information</h3>
+            </div>
+            <div class="card-body">
+                <div class="row" id="card-content">
+
+                </div>
+            </div>
+        </div>
+
+        {% if REFERER %}
+            <a href="{{ REFERER }}"
+               class='btn position-fixed top-0 start-0 ms-3 mt-3 opacity-50'
+               role='button'>Go back</a>
+        {% endif %}
+
+        <a href="/" class="btn position-fixed top-0 end-0 me-3 mt-3 opacity-50" role="button">Main</a>
+
+    </section>
+
+    <script defer type="module" src="{{ ASSETS_ROOT ~ "getSingleUser.bundle.js" }}"></script>
+{% endblock %}

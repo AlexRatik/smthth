@@ -1,0 +1,47 @@
+version: '3'
+services:
+  php:
+    container_name: php
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    depends_on:
+      - mysql
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    volumes:
+      - './docker/nginx/conf.d:/etc/nginx/conf.d'
+    ports:
+      - '8082:80'
+    depends_on:
+      - mysql
+      - php
+
+  mysql:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: users
+    ports:
+      - "9906:3306"
+    volumes:
+      - './docker/volume/sql-scripts:/docker-entrypoint-initdb.d/'
+      - 'mysql-data:/var/lib/mysql'
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin
+    ports:
+      - '8081:80'
+    restart: always
+    environment:
+      PMA_HOST: mysql
+    depends_on:
+      - mysql
+
+volumes:
+  mysql-data:

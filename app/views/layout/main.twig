@@ -1,0 +1,23 @@
+{% set ASSETS_ROOT = "/assets/dist/" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="{{ ASSETS_ROOT ~ 'index.css' }}"/>
+    {% block head %}{% endblock %}
+
+    <title>{% block title %}Users{% endblock %}</title>
+
+</head>
+<body>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

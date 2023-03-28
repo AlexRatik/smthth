@@ -1,0 +1,81 @@
+{% extends "layout/main.twig" %}
+
+{% block title %}
+    New one
+{% endblock %}
+
+{% block content %}
+
+    <section class="container">
+        <div class="row p-1">
+            <div class="col-sm-9 col-xl-6 mx-auto">
+                <form method="post"
+                      class="user-form row shadow bg-body-tertiary rounded g-3 mt-5 p-3"
+                      id="create-user-form">
+
+                    <div>
+                        <label for="user-name" class="form-label">Name:</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                            <input type="text"
+                                   id="user-name"
+                                   class="form-control"
+                                   placeholder="Your first and last name">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="user-email" class="form-label">Email:</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text"><i class="bi bi-envelope-at-fill"></i></span>
+                            <input type="text"
+                                   id="user-email"
+                                   placeholder="Your email"
+                                   class="form-control">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="form-label" for="user-gender">Gender:</label>
+                        <div class="input-group input-group-lg input-group-sm-sm">
+                            <span class="input-group-text"><i class="bi bi-gender-ambiguous"></i></span>
+                            <select class="form-select" id="user-gender">
+                                {% for key, value in GENDER_OPTIONS %}
+                                    <option value="{{ value }}">{{ key|capitalize }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="form-label" for="user-status">Status:</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text"><i class="bi bi-activity"></i></span>
+                            <select class="form-select" id="user-status">
+                                {% for key, value in STATUS_OPTIONS %}
+                                    <option value="{{ value }}">{{ key|capitalize }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-lg mt-5" type="submit">Submit!</button>
+
+                </form>
+            </div>
+        </div>
+
+        {% if REFERER %}
+            <a href="{{ REFERER }}"
+               class="btn position-fixed top-0 start-0 ms-3 mt-3 opacity-50"
+               role="button">Go back</a>
+        {% endif %}
+
+        <a href="/" class="btn position-fixed top-0 end-0 me-3 mt-3 opacity-50" role="button">Main</a>
+
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ ASSETS_ROOT ~ "create.bundle.js" }}"></script>
+{% endblock %}
